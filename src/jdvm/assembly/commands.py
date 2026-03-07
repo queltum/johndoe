@@ -1,0 +1,82 @@
+from .opcodes import Opcode
+
+class Command:
+	def __init__(self, opcode: int, arg_a, arg_b):
+		self.opcode = opcode
+		self.arg_a = arg_a
+		self.arg_b = arg_b
+
+def ADD() -> Command:
+	return Command(Opcode.ADD, None, None)
+def SUB() -> Command:
+	return Command(Opcode.SUB, None, None)
+def MUL() -> Command:
+	return Command(Opcode.MUL, None, None)
+def DIV() -> Command:
+	return Command(Opcode.DIV, None, None)
+def INC() -> Command:
+	return Command(Opcode.INC, None, None)
+def DEC() -> Command:
+	return Command(Opcode.DEC, None, None)
+def MOD() -> Command:
+	return Command(Opcode.MOD, None, None)
+def POW() -> Command:
+	return Command(Opcode.POW, None, None)
+def AND() -> Command:
+	return Command(Opcode.AND, None, None)
+def OR() -> Command:
+	return Command(Opcode.OR, None, None)
+def XOR() -> Command:
+	return Command(Opcode.XOR, None, None)
+def NOT() -> Command:
+	return Command(Opcode.NOT, None, None)
+def LSH() -> Command:
+	return Command(Opcode.LSH, None, None)
+def RSH() -> Command:
+	return Command(Opcode.RSH, None, None)
+def SET() -> Command:
+	return Command(Opcode.SET, None, None)
+def RESET() -> Command:
+	return Command(Opcode.RESET, None, None)
+def PUSH(arg) -> Command:
+	return Command(Opcode.PUSH, arg, None)
+def POP() -> Command:
+	return Command(Opcode.POP, None, None)
+def DUP(arg) -> Command:
+	return Command(Opcode.DUP, arg, None)
+def SWAP(arg) -> Command:
+	return Command(Opcode.SWAP, arg, None)
+def RET() -> Command:
+	return Command(Opcode.RET, None, None)
+def THROW() -> Command:
+	return Command(Opcode.THROW, None, None)
+def YIELD() -> Command:
+	return Command(Opcode.YIELD, None, None)
+def AWAIT() -> Command:
+	return Command(Opcode.AWAIT, None, None)
+def JE(arg) -> Command:
+	return Command(Opcode.JE, arg, None)
+def JNE(arg) -> Command:
+	return Command(Opcode.JNE, arg, None)
+def JG(arg) -> Command:
+	return Command(Opcode.JG, arg, None)
+def JGE(arg) -> Command:
+	return Command(Opcode.JGE, arg, None)
+def JL(arg) -> Command:
+	return Command(Opcode.JL, arg, None)
+def JLE(arg) -> Command:
+	return Command(Opcode.JLE, arg, None)
+def JMP(arg) -> Command:
+	return Command(Opcode.JMP, arg, None)
+def CALL(arg) -> Command:
+	return Command(Opcode.CALL, arg, None)
+def REM(arg) -> Command:
+	return Command(Opcode.REM, arg, None)
+def LBL(arg) -> Command:
+	return Command(Opcode.LBL, arg, None)
+def BPT() -> Command:
+	return Command(Opcode.BPT, None, None)
+def END() -> Command:
+	return Command(Opcode.END, None, None)
+def INT(arg) -> Command:
+	return Command(Opcode.INT, arg, None)
