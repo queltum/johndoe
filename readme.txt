@@ -1,7 +1,7 @@
-jhondoe - is an experimental stack-based platform for learning and experimentig with programming concepts. The ultimate goal is to provide a **visual programming interface**, where users can drag and drop blocks to create programs.
+jhondoe - is an experimental stack-based platform for learning and experimenting with programming concepts. The ultimate goal is to provide a visual programming interface, where users can drag and drop blocks to create programs.
 
 
-**Project Structure**
+Project Structure
 
 src/ 
 ├── gui/
@@ -16,5 +16,6 @@ src/
 │   ├── assembly/
 │   │   ├── __init__.py
 │   │   ├── opcodes.py       # Opcode
+│   │   ├── parser.py        # Parser
 │   │   └── commands.py		 # DSL for building commands
 └── README.md

@@ -94,7 +94,7 @@ class Executor:
 		self.ctx.pc += 1
 
 	def op_push(self) -> None:
-		self.ctx.stack.push(self.code[self.ctx.pc].arg_a)
+		self.ctx.stack.push(self.code[self.ctx.pc].arg)
 		self.ctx.pc += 1
 
 	def op_pop(self) -> None:
@@ -104,13 +104,13 @@ class Executor:
 	def op_dup(self) -> None:
 		self.ctx.stack.push(
 			self.ctx.stack._stack[
-				self.ctx.stack.bp + self.code[self.ctx.pc].arg_a
+				self.ctx.stack.bp + self.code[self.ctx.pc].arg
 			]
 		)
 		self.ctx.pc += 1
 
 	def op_swap(self) -> None:
-		offset = self.ctx.stack.bp - self.code[self.ctx.pc].arg_a
+		offset = self.ctx.stack.bp - self.code[self.ctx.pc].arg
 		tmp = self.ctx.stack._stack[offset]
 		self.ctx.stack._stack[offset] = self.ctx.stack._stack[self.ctx.stack.sp]
 		self.ctx.stack._stack[self.ctx.stack.sp] = tmp
@@ -131,47 +131,47 @@ class Executor:
 
 	def op_je(self) -> None:
 		if self.ctx.stack._stack[self.ctx.stack.sp] == self.ctx.stack._stack[self.ctx.stack.sp - 1]:
-			self.ctx.pc = self.code[self.ctx.pc].arg_a
+			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
 	def op_jne(self) -> None:
 		if self.ctx.stack._stack[self.ctx.stack.sp] != self.ctx.stack._stack[self.ctx.stack.sp - 1]:
-			self.ctx.pc = self.code[self.ctx.pc].arg_a
+			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
 	def op_jg(self) -> None:
 		if self.ctx.stack._stack[self.ctx.stack.sp] > self.ctx.stack._stack[self.ctx.stack.sp - 1]:
-			self.ctx.pc = self.code[self.ctx.pc].arg_a
+			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
 	def op_jge(self) -> None:
 		if self.ctx.stack._stack[self.ctx.stack.sp] >= self.ctx.stack._stack[self.ctx.stack.sp - 1]:
-			self.ctx.pc = self.code[self.ctx.pc].arg_a
+			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
 	def op_jl(self) -> None:
 		if self.ctx.stack._stack[self.ctx.stack.sp] < self.ctx.stack._stack[self.ctx.stack.sp - 1]:
-			self.ctx.pc = self.code[self.ctx.pc].arg_a
+			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
 	def op_jle(self) -> None:
 		if self.ctx.stack._stack[self.ctx.stack.sp] <= self.ctx.stack._stack[self.ctx.stack.sp - 1]:
-			self.ctx.pc = self.code[self.ctx.pc].arg_a
+			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
 	def op_jmp(self) -> None:
-		self.ctx.pc = self.code[self.ctx.pc].arg_a
+		self.ctx.pc = self.code[self.ctx.pc].arg
 
 	def op_call(self) -> None:
 		self.ctx.stack.push((self.ctx.pc + 1, self.ctx.stack.bp))
 		self.ctx.stack.bp = self.ctx.stack.sp
-		self.ctx.pc = self.code[self.ctx.pc].arg_a
+		self.ctx.pc = self.code[self.ctx.pc].arg
 
 	def op_ret(self) -> None:
 		if self.ctx.stack.sp > self.ctx.stack.bp:
@@ -191,6 +191,6 @@ class Executor:
 	def op_out(self) -> None:
 		pass
 	def op_int(self) -> None:
-		self.interrupt_controller.call(self.code[self.ctx.pc].arg_a)
+		self.interrupt_controller.call(self.code[self.ctx.pc].arg)
 	def op_async_call(self) -> None:
 		pass
