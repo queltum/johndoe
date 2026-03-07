@@ -1,4 +1,4 @@
-jhondoe - is an experimental stack-based platform for learning and experimenting with programming concepts. The ultimate goal is to provide a visual programming interface, where users can drag and drop blocks to create programs.
+johndoe - is an experimental stack-based platform for learning and experimenting with programming concepts. The ultimate goal is to provide a visual programming interface, where users can drag and drop blocks to create programs.
 
 
 Project Structure
