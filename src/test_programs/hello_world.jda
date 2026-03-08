@@ -1,0 +1,4 @@
+REM !hello world program
+PUSH $hello world
+INT #1
+END

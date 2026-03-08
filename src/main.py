@@ -1,5 +1,7 @@
 import jdvm
 
+file = open(r"./test_programs/stack_test.jda", "r")
+
 vm = jdvm.core.Executor(
 	ctx=jdvm.core.Context(
 		32,
@@ -7,7 +9,7 @@ vm = jdvm.core.Executor(
 	),
 	entry=0,
 	code=jdvm.parser.Parser(
-		"REM !hello world program\nPUSH $hello world\nINT #1\nEND"
+		file.read()
 	).parse()
 )
 

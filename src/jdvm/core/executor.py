@@ -98,7 +98,7 @@ class Executor:
 		self.ctx.pc += 1
 
 	def op_pop(self) -> None:
-		self.ctx.stack.pop()
+		self.ctx.stack.sp -= 1
 		self.ctx.pc += 1
 
 	def op_dup(self) -> None:
@@ -110,7 +110,7 @@ class Executor:
 		self.ctx.pc += 1
 
 	def op_swap(self) -> None:
-		offset = self.ctx.stack.bp - self.code[self.ctx.pc].arg
+		offset = self.ctx.stack.bp + self.code[self.ctx.pc].arg
 		tmp = self.ctx.stack._stack[offset]
 		self.ctx.stack._stack[offset] = self.ctx.stack._stack[self.ctx.stack.sp]
 		self.ctx.stack._stack[self.ctx.stack.sp] = tmp

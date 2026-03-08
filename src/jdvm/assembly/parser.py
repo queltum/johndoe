@@ -21,8 +21,7 @@ class Parser:
 			opcode, _, arg = command.partition(' ')
 			if opcode == "LBL":
 				self.lbl_map[arg[1:]] = cp + 1
-			else:
-				cp += 1
+			cp += 1
 
 	def decode_label(self, label_id) -> int:
 		return self.lbl_map[label_id]
