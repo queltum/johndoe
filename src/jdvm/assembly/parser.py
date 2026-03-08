@@ -1,6 +1,7 @@
-from . import commands, opcodes
+from . import commands
 
 class Parser:
+
 	def __init__(self, raw: str):
 		self.commands = raw.split('\n')
 		self.arg_cast = {
@@ -15,7 +16,7 @@ class Parser:
 	def _donothing(self, arg):
 		return arg
 
-	def map_labels(self) -> None:
+	def map_labels(self):
 		cp = 0
 		for command in self.commands:
 			opcode, _, arg = command.partition(' ')

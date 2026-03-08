@@ -1,11 +1,7 @@
 from . import context
 
-class Interrupt:
-	QUIT = 0
-	PRINT = 1
-	INPUT = 2
-
 class InterruptController:
+
 	def __init__(self, ctx: context.Context):
 		self.ctx = ctx
 		self.table = (
@@ -20,9 +16,8 @@ class InterruptController:
 		self.ctx.trapped = True
 
 	def int_print(self) -> None:
-		print(self.ctx.stack.peek())
-		self.ctx.pc += 1
+		print(self.ctx.stack[self.ctx.sp])
 
 	def int_input(self) -> None:
-		self.ctx.stack.push(input())
-		self.ctx.pc += 1
+		self.ctx.sp += 1
+		self.ctx.stack[self.ctx.sp] = input()

@@ -1,7 +1,9 @@
+from .. import assembly
 from . import context
 from . import interrupts
 
 class Executor:
+
 	def __init__(self, ctx: context.Context, entry: int, code):
 		self.ctx = ctx
 		self.entry = entry
@@ -21,176 +23,213 @@ class Executor:
 			self.op_in, self.op_out, self.op_int, self.op_async_call
 		)
 
-	def reset(self) -> None:
-		self.ctx.stack.sp = -1
-		self.ctx.stack.bp = -1
-		self.ctx.pc = self.entry
-		self.ctx.running = False
-
-	def load_commands(self, code: tuple) -> None:
+	def load_commands(self, code: tuple):
 		self.code = code
 
-	def execute(self) -> None:
+	def execute(self):
 		self.ctx.running = True
 		
-		while self.ctx.running == True:
+		while self.ctx.running:
 			self.dispatch[self.code[self.ctx.pc].opcode]()
 
-	def op_add(self) -> None:
-		self.ctx.stack.push(self.ctx.stack.pop() + self.ctx.stack.pop())
+	def op_add(self):
+		op_a = self.ctx.stack[self.ctx.sp]
+		op_b = self.ctx.stack[self.ctx.sp - 1]
+		self.ctx.sp -= 1
+		self.ctx.stack[self.ctx.sp] = op_a + op_b
 		self.ctx.pc += 1
-	def op_sub(self) -> None:
-		self.ctx.stack.push(self.ctx.stack.pop() - self.ctx.stack.pop())
+
+	def op_sub(self):
+		op_a = self.ctx.stack[self.ctx.sp]
+		op_b = self.ctx.stack[self.ctx.sp - 1]
+		self.ctx.sp -= 1
+		self.ctx.stack[self.ctx.sp] = op_a - op_b
 		self.ctx.pc += 1
 	
-	def op_mul(self) -> None:
-		self.ctx.stack.push(self.ctx.stack.pop() * self.ctx.stack.pop())
+	def op_mul(self):
+		op_a = self.ctx.stack[self.ctx.sp]
+		op_b = self.ctx.stack[self.ctx.sp - 1]
+		self.ctx.sp -= 1
+		self.ctx.stack[self.ctx.sp] = op_a * op_b
 		self.ctx.pc += 1
 
-	def op_div(self) -> None:
-		self.ctx.stack.push(self.ctx.stack.pop() / self.ctx.stack.pop())
+	def op_div(self):
+		op_a = self.ctx.stack[self.ctx.sp]
+		op_b = self.ctx.stack[self.ctx.sp - 1]
+		self.ctx.sp -= 1
+		self.ctx.stack[self.ctx.sp] = op_a / op_b
 		self.ctx.pc += 1
 
-	def op_inc(self) -> None:
-		self.ctx.stack._stack[self.ctx.stack.sp] += 1
+	def op_inc(self):
+		self.ctx.stack[self.ctx.sp] += 1
 		self.ctx.pc += 1
 
-	def op_dec(self) -> None:
-		self.ctx.stack._stack[self.ctx.stack.sp] -= 1
+	def op_dec(self):
+		self.ctx.stack[self.ctx.sp] -= 1
 		self.ctx.pc += 1
 
-	def op_mod(self) -> None:
+	def op_mod(self):
+		op_a = self.ctx.stack[self.ctx.sp]
+		op_b = self.ctx.stack[self.ctx.sp - 1]
+		self.ctx.sp -= 1
+		self.ctx.stack[self.ctx.sp] = op_a % op_b
 		self.ctx.pc += 1
 
-	def op_pow(self) -> None:
+	def op_pow(self):
+		op_a = self.ctx.stack[self.ctx.sp]
+		op_b = self.ctx.stack[self.ctx.sp - 1]
+		self.ctx.sp -= 1
+		self.ctx.stack[self.ctx.sp] = op_a ** op_b
 		self.ctx.pc += 1
 
-	def op_and(self) -> None:
-		self.ctx.stack.push(self.ctx.stack.pop() & self.ctx.stack.pop())
+	def op_and(self):
+		op_a = self.ctx.stack[self.ctx.sp]
+		op_b = self.ctx.stack[self.ctx.sp - 1]
+		self.ctx.sp -= 1
+		self.ctx.stack[self.ctx.sp] = op_a & op_b
 		self.ctx.pc += 1
 
-	def op_or(self) -> None:
-		self.ctx.stack.push(self.ctx.stack.pop() | self.ctx.stack.pop())
+	def op_or(self):
+		op_a = self.ctx.stack[self.ctx.sp]
+		op_b = self.ctx.stack[self.ctx.sp - 1]
+		self.ctx.sp -= 1
+		self.ctx.stack[self.ctx.sp] = op_a | op_b
 		self.ctx.pc += 1
 
-	def op_xor(self) -> None:
-		self.ctx.stack.push(self.ctx.stack.pop() ^ self.ctx.stack.pop())
+	def op_xor(self):
+		op_a = self.ctx.stack[self.ctx.sp]
+		op_b = self.ctx.stack[self.ctx.sp - 1]
+		self.ctx.sp -= 1
+		self.ctx.stack[self.ctx.sp] = op_a ^ op_b
 		self.ctx.pc += 1
 
-	def op_not(self) -> None:
-		self.ctx.stack._stack[self.ctx.stack.sp] = ~self.ctx.stack._stack[self.ctx.stack.sp]
+	def op_not(self):
+		self.ctx.stack[self.ctx.sp] = ~self.ctx.stack[self.ctx.sp]
 		self.ctx.pc += 1
 
-	def op_lsh(self) -> None:
+	def op_lsh(self):
+		op_a = self.ctx.stack[self.ctx.sp]
+		op_b = self.ctx.stack[self.ctx.sp - 1]
+		self.ctx.sp -= 1
+		self.ctx.stack[self.ctx.sp] = op_a << op_b
 		self.ctx.pc += 1
 
-	def op_rsh(self) -> None:
+	def op_rsh(self):
+		op_a = self.ctx.stack[self.ctx.sp]
+		op_b = self.ctx.stack[self.ctx.sp - 1]
+		self.ctx.sp -= 1
+		self.ctx.stack[self.ctx.sp] = op_a >> op_b
 		self.ctx.pc += 1
 
-	def op_set(self) -> None:
+	def op_set(self):
+		self.ctx.stack[self.ctx.sp] = self.code[self.ctx.pc].arg
 		self.ctx.pc += 1
 
-	def op_reset(self) -> None:
+	def op_reset(self):
+		#todo
 		self.ctx.pc += 1
 
-	def op_push(self) -> None:
-		self.ctx.stack.push(self.code[self.ctx.pc].arg)
+	def op_push(self):
+		self.ctx.sp += 1
+		self.ctx.stack[self.ctx.sp] = self.code[self.ctx.pc].arg
 		self.ctx.pc += 1
 
-	def op_pop(self) -> None:
-		self.ctx.stack.sp -= 1
+	def op_pop(self):
+		self.ctx.sp -= 1
 		self.ctx.pc += 1
 
-	def op_dup(self) -> None:
-		self.ctx.stack.push(
-			self.ctx.stack._stack[
-				self.ctx.stack.bp + self.code[self.ctx.pc].arg
-			]
-		)
+	def op_dup(self):
+		self.ctx.sp += 1
+		self.ctx.stack[self.ctx.sp] = self.ctx.stack[
+			self.ctx.bp + self.code[self.ctx.pc].arg
+		]
 		self.ctx.pc += 1
 
-	def op_swap(self) -> None:
-		offset = self.ctx.stack.bp + self.code[self.ctx.pc].arg
-		tmp = self.ctx.stack._stack[offset]
-		self.ctx.stack._stack[offset] = self.ctx.stack._stack[self.ctx.stack.sp]
-		self.ctx.stack._stack[self.ctx.stack.sp] = tmp
+	def op_swap(self):
+		offset = self.ctx.bp + self.code[self.ctx.pc].arg
+		tmp = self.ctx.stack[offset]
+		self.ctx.stack[offset] = self.ctx.stack[self.ctx.sp]
+		self.ctx.stack[self.ctx.sp] = tmp
 		self.ctx.pc += 1
 
-	def op_rem(self) -> None:
+	def op_rem(self):
 		self.ctx.pc += 1
 
-	def op_lbl(self) -> None:
+	def op_lbl(self):
 		self.ctx.pc += 1
 
-	def op_bpt(self) -> None:
+	def op_bpt(self):
 		self.ctx.pc += 1
 
-	def op_end(self) -> None:
+	def op_end(self):
 		self.ctx.running = False
-		self.ctx.pc += 1
 
-	def op_je(self) -> None:
-		if self.ctx.stack._stack[self.ctx.stack.sp] == self.ctx.stack._stack[self.ctx.stack.sp - 1]:
+	def op_je(self):
+		if self.ctx.stack[self.ctx.sp] == self.ctx.stack[self.ctx.sp - 1]:
 			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
-	def op_jne(self) -> None:
-		if self.ctx.stack._stack[self.ctx.stack.sp] != self.ctx.stack._stack[self.ctx.stack.sp - 1]:
+	def op_jne(self):
+		if self.ctx.stack[self.ctx.sp] != self.ctx.stack[self.ctx.sp - 1]:
 			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
-	def op_jg(self) -> None:
-		if self.ctx.stack._stack[self.ctx.stack.sp] > self.ctx.stack._stack[self.ctx.stack.sp - 1]:
+	def op_jg(self):
+		if self.ctx.stack[self.ctx.sp] > self.ctx.stack[self.ctx.sp - 1]:
 			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
-	def op_jge(self) -> None:
-		if self.ctx.stack._stack[self.ctx.stack.sp] >= self.ctx.stack._stack[self.ctx.stack.sp - 1]:
+	def op_jge(self):
+		if self.ctx.stack[self.ctx.sp] >= self.ctx.stack[self.ctx.sp - 1]:
 			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
-	def op_jl(self) -> None:
-		if self.ctx.stack._stack[self.ctx.stack.sp] < self.ctx.stack._stack[self.ctx.stack.sp - 1]:
+	def op_jl(self):
+		if self.ctx.stack[self.ctx.sp] < self.ctx.stack[self.ctx.sp - 1]:
 			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
-	def op_jle(self) -> None:
-		if self.ctx.stack._stack[self.ctx.stack.sp] <= self.ctx.stack._stack[self.ctx.stack.sp - 1]:
+	def op_jle(self):
+		if self.ctx.stack[self.ctx.sp] <= self.ctx.stack[self.ctx.sp - 1]:
 			self.ctx.pc = self.code[self.ctx.pc].arg
 		else:
 			self.ctx.pc += 1
 
-	def op_jmp(self) -> None:
+	def op_jmp(self):
 		self.ctx.pc = self.code[self.ctx.pc].arg
 
-	def op_call(self) -> None:
-		self.ctx.stack.push((self.ctx.pc + 1, self.ctx.stack.bp))
-		self.ctx.stack.bp = self.ctx.stack.sp
+	def op_call(self):
+		self.ctx.sp += 1
+		self.ctx.stack[self.ctx.sp] = (self.ctx.pc + 1, self.ctx.bp)
+		self.ctx.bp = self.ctx.sp
 		self.ctx.pc = self.code[self.ctx.pc].arg
 
-	def op_ret(self) -> None:
-		if self.ctx.stack.sp > self.ctx.stack.bp:
-			ret_val = self.ctx.stack._stack[self.ctx.stack.sp]
-			self.ctx.stack._stack[self.ctx.stack.sp] = self.ctx.stack._stack[self.ctx.stack.sp - 1]
-			self.ctx.stack._stack[self.ctx.stack.sp - 1] = ret_val
-		self.ctx.pc, self.ctx.stack.bp = self.ctx.stack.pop()
+	def op_ret(self):
+		if self.ctx.sp > self.ctx.bp:
+			ret_val = self.ctx.stack[self.ctx.sp]
+			self.ctx.stack[self.ctx.sp] = self.ctx.stack[self.ctx.sp - 1]
+			self.ctx.stack[self.ctx.sp - 1] = ret_val
+		self.ctx.pc, self.ctx.bp = self.ctx.stack[self.ctx.sp]
+		self.ctx.sp -= 1
+		pass
 
-	def op_throw(self) -> None:
+	def op_throw(self):
 		pass
-	def op_yield(self) -> None:
+	def op_yield(self):
 		pass
-	def op_await(self) -> None:
+	def op_await(self):
 		pass
-	def op_in(self) -> None:
+	def op_in(self):
 		pass
-	def op_out(self) -> None:
+	def op_out(self):
 		pass
-	def op_int(self) -> None:
+	def op_int(self):
 		self.interrupt_controller.call(self.code[self.ctx.pc].arg)
-	def op_async_call(self) -> None:
+		self.ctx.pc += 1
+	def op_async_call(self):
 		pass

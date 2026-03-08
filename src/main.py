@@ -1,6 +1,6 @@
 import jdvm
 
-file = open(r"./test_programs/stack_test.jda", "r")
+file = open(r"./test_programs/test_program.jda", "r")
 
 vm = jdvm.core.Executor(
 	ctx=jdvm.core.Context(
