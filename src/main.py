@@ -1,16 +1,10 @@
-import jdvm
+import jdvm.preprocessor
+import jdvm.executor
 
-file = open(r"./test_programs/test_program.jda", "r")
+file = open(r"./test_programs/add_func.jda", "r")
 
-vm = jdvm.core.Executor(
-	ctx=jdvm.core.Context(
-		32,
-		False
-	),
-	entry=0,
-	code=jdvm.parser.Parser(
-		file.read()
-	).parse()
-)
+program = jdvm.preprocessor.preprocess(file.read())
+print(program)
 
-vm.execute()
+jdvm.executor.execute(program)
+

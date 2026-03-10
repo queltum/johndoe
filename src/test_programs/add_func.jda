@@ -1,11 +1,11 @@
-REM !ADD_FUNC PROGRAM
-PUSH #128
-PUSH #128
-CALL &ADD_FUNC
-INT #1
-END
-LBL !ADD_FUNC
-DUP #-1
-DUP #-2
-ADD
-RET
+.rem add func program
+pushi 2
+pushi 12
+call add_func
+int 1
+end
+.lbl add_func
+dup -1
+dup -2
+div
+ret

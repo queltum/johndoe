@@ -14,7 +14,7 @@ class Executor:
 			self.op_add, self.op_sub, self.op_mul, self.op_div,
 			self.op_inc, self.op_dec, self.op_mod, self.op_pow,
 			self.op_and, self.op_or, self.op_xor, self.op_not,
-			self.op_lsh, self.op_rsh, self.op_set, self.op_reset,
+			self.op_lsh, self.op_rsh, self.op_set, self.op_poke,
 			self.op_push, self.op_pop, self.op_dup, self.op_swap,
 			self.op_rem, self.op_lbl, self.op_bpt, self.op_end,
 			self.op_je, self.op_jne, self.op_jg, self.op_jge,
@@ -125,8 +125,10 @@ class Executor:
 		self.ctx.stack[self.ctx.sp] = self.code[self.ctx.pc].arg
 		self.ctx.pc += 1
 
-	def op_reset(self):
-		#todo
+	def op_poke(self):
+		self.ctx.stack[
+			self.ctx.bp + self.code[self.ctx.pc].arg
+		] = self.ctx.stack[self.ctx.sp]
 		self.ctx.pc += 1
 
 	def op_push(self):

@@ -1,4 +1,4 @@
-REM !HELLO WORLD PROGRAM
-PUSH $HELLO WORLD
-INT #1
-END
+.rem hello world program
+pushs hello world
+int 1
+end

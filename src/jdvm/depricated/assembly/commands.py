@@ -52,7 +52,7 @@ def RSH(arg) -> Command:
 def SET(arg) -> Command:
 	return Command(14, None)
 
-def RESET(arg) -> Command:
+def POKE(arg) -> Command:
 	return Command(15, None)
 
 def PUSH(arg) -> Command:
