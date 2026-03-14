@@ -33,36 +33,36 @@
 		<tr>
 			<th>0</th>
 			<th>.add</th><th>.sub</th><th>.mul</th><th>.div</th>
-			<th>.inc</th><th>.dec</th><th>.mod</th><th>.pow</th>
+			<th>.mod</th><th>.pow</th><th>.inc</th><th>.dec</th>
 		</tr>
 		<tr>
 			<th>1</th>
 			<th>.and</th><th>.or</th><th>.xor</th><th>.not</th>
-			<th>.lsh</th><th>.rsh</th><th>.s2i</th><th>.s2f</th>
+			<th>.lsh</th><th>.rsh</th><th>!bic</th><th>.neg</th>
 		</tr>
 		<tr>
 			<th>2</th>
 			<th>!push</th><th>!pop</th><th>!dup</th><th>!poke</th>
-			<th>!swap</th><th>.ret</th><th>.noret</th><th>!call</th>
+			<th>!swap</th><th>!over</th><th>.dump</th><th>.breakpoint</th>
 		</tr>
 		<tr>
 			<th>3</th>
 			<th>!je</th><th>!jne</th><th>!jg</th><th>!jge</th>
-			<th>!jl</th><th>!jle</th><th>!jmp</th><th>---</th>
+			<th>!jl</th><th>!jle</th><th>!jmp</th><th>.goto</th>
 		</tr>
 		<tr>
 			<th>4</th>
-			<th>!in</th><th>!out</th><th>int</th><th>---</th>
-			<th>---</th><th>---</th><th>---</th><th>---</th>
+			<th>!jez</th><th>!jnez</th><th>!jgz</th><th>!jgez</th>
+			<th>!jlz</th><th>!jlez</th><th>!repeat</th><th>.end</th>
 		</tr>
 		<tr>
 			<th>5</th>
-			<th>---</th><th>---</th><th>---</th><th>---</th>
-			<th>---</th><th>---</th><th>---</th><th>---</th>
+			<th>!call</th><th>.invoke</th><th>!acall</th><th>!await</th>
+			<th>.ret0</th><th>.ret1</th><th>.ret2</th><th>!retn</th>
 		</tr>
 		<tr>
 			<th>6</th>
-			<th>---</th><th>---</th><th>---</th><th>---</th>
+			<th>!int</th><th>.trap</th><th>.in</th><th>.out</th>
 			<th>---</th><th>---</th><th>---</th><th>---</th>
 		</tr>
 		<tr>
@@ -72,21 +72,6 @@
 		</tr>
 	</table>
 	<h5>NOTE:</h5>
-	<p>All assembly commands are based on the following grammatical rule: opcode [vargs]. Auxiliary commands also follow to this rule.</p>
-	<p>The vector of arguments is passed in reverse order: A and B -> B and A</p>
 	<p>The call instruction pushes the return address and the contents of the bp register onto the stack.<br> If the sp register does not point to the contents of the bp register upon call, the ret instruction pushes the function result onto the top of the stack.<br> The function arguments are freed by the programmer (not automatically).</p>
-	<h3>jdvm interrupt table</h3>
-	<table>
-		<tr>
-			<th>oct</th>
-			<th>0</th><th>1</th><th>2</th><th>3</th>
-		   	<th>4</th><th>5</th><th>6</th><th>7</th>
-		</tr>
-		<tr>
-			<th>0</th>
-			<th>quit</th><th>print</th><th>input</th><th>---</th>
-			<th>---</th><th>---</th><th>---</th><th>---</th>
-		</tr>
-	</table>
 </body>
 </html>

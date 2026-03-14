@@ -1,0 +1,7 @@
+-- classic add progam
+main:
+	push 12
+	push 12
+	add
+	int 1
+	end

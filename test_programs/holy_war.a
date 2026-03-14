@@ -1,0 +1,6 @@
+-- holy war program
+main:
+	push "hello world"
+	print
+	loop 10
+	ret 0

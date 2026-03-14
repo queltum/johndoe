@@ -28,7 +28,10 @@ class Executor:
 
 	def execute(self):
 		self.ctx.running = True
-		
+		self.ctx.sp = -1
+		self.ctx.bp = 0
+		self.ctx.pc = self.entry
+
 		while self.ctx.running:
 			self.dispatch[self.code[self.ctx.pc].opcode]()
 

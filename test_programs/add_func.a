@@ -1,0 +1,11 @@
+-- add func program
+main:
+	push 0x0C
+	push 0x0C
+	call add_func
+	int 1
+	ret
+add_func:
+	over 0x02
+	add
+	ret 0x01

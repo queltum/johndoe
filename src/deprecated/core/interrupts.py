@@ -16,7 +16,7 @@ class InterruptController:
 		self.ctx.trapped = True
 
 	def int_print(self) -> None:
-		print(self.ctx.stack[self.ctx.sp])
+		pass
 
 	def int_input(self) -> None:
 		self.ctx.sp += 1

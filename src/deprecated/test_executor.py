@@ -1,38 +1,30 @@
 from . import context as ctx
 
 def op_add(x):
-	sp = ctx.sp
+	sp = ctx.sp - 1
 	stack = ctx.stack
-	a = stack[sp]
-	sp -= 1
-	stack[sp] += a
+	stack[sp] += stack[sp + 1]
 	ctx.sp = sp
 	ctx.pc += 1
 
 def op_sub(x):
-	sp = ctx.sp
+	sp = ctx.sp - 1
 	stack = ctx.stack
-	a = stack[sp]
-	sp -= 1
-	stack[sp] = a - stack[sp]
+	stack[sp] -= stack[sp + 1]
 	ctx.sp = sp
 	ctx.pc += 1
 
 def op_mul(x):
-	sp = ctx.sp
+	sp = ctx.sp - 1
 	stack = ctx.stack
-	a = stack[sp]
-	sp -= 1
-	stack[sp] *= a
+	stack[sp] *= stack[sp + 1]
 	ctx.sp = sp
 	ctx.pc += 1
 
 def op_div(x):
-	sp = ctx.sp
+	sp = ctx.sp - 1
 	stack = ctx.stack
-	a = stack[sp]
-	sp -= 1
-	stack[sp] = a / stack[sp]
+	stack[sp] /= stack[sp + 1]
 	ctx.sp = sp
 	ctx.pc += 1
 
@@ -45,47 +37,37 @@ def op_dec(x):
 	ctx.pc += 1
 
 def op_mod(x):
-	sp = ctx.sp
+	sp = ctx.sp - 1
 	stack = ctx.stack
-	a = stack[sp]
-	sp -= 1
-	stack[sp] = a % stack[sp]
+	stack[sp] %= stack[sp + 1]
 	ctx.sp = sp
 	ctx.pc += 1
 
 def op_pow(x):
-	sp = ctx.sp
+	sp = ctx.sp - 1
 	stack = ctx.stack
-	a = stack[sp]
-	sp -= 1
-	stack[sp] = a ** stack[sp]
+	stack[sp] **= stack[sp + 1]
 	ctx.sp = sp
 	ctx.pc += 1
 
 def op_and(x):
-	sp = ctx.sp
+	sp = ctx.sp - 1
 	stack = ctx.stack
-	a = stack[sp]
-	sp -= 1
-	stack[sp] &= a
+	stack[sp] &= stack[sp + 1]
 	ctx.sp = sp
 	ctx.pc += 1
 
 def op_or(x):
-	sp = ctx.sp
+	sp = ctx.sp - 1
 	stack = ctx.stack
-	a = stack[sp]
-	sp -= 1
-	stack[sp] |= a
+	stack[sp] |= stack[sp + 1]
 	ctx.sp = sp
 	ctx.pc += 1
 
 def op_xor(x):
-	sp = ctx.sp
+	sp = ctx.sp - 1
 	stack = ctx.stack
-	a = stack[sp]
-	sp -= 1
-	stack[sp] ^= a
+	stack[sp] ^= stack[sp + 1]
 	ctx.sp = sp
 	ctx.pc += 1
 
@@ -96,20 +78,16 @@ def op_not(x):
 	ctx.pc += 1
 
 def op_lsh(x):
-	sp = ctx.sp
+	sp = ctx.sp - 1
 	stack = ctx.stack
-	a = stack[sp]
-	sp -= 1
-	stack[sp] = a << stack[sp]
+	stack[sp] <<= stack[sp + 1]
 	ctx.sp = sp
 	ctx.pc += 1
 
 def op_rsh(x):
-	sp = ctx.sp
+	sp = ctx.sp - 1
 	stack = ctx.stack
-	a = stack[sp]
-	sp -= 1
-	stack[sp] = a >> stack[sp]
+	stack[sp] >>= stack[sp + 1]
 	ctx.sp = sp
 	ctx.pc += 1
 
@@ -126,22 +104,19 @@ def op_s2f(x):
 	ctx.pc += 1
 
 def op_pushi(obj):
-	sp = ctx.sp
-	sp += 1
+	sp = ctx.sp + 1
 	ctx.stack[sp] = int(obj)
 	ctx.sp = sp
 	ctx.pc += 1
 
 def op_pushf(obj):
-	sp = ctx.sp
-	sp += 1
+	sp = ctx.sp + 1
 	ctx.stack[sp] = float(obj)
 	ctx.sp = sp
 	ctx.pc += 1
 
 def op_pushs(obj):
-	sp = ctx.sp
-	sp += 1
+	sp = ctx.sp + 1
 	ctx.stack[sp] = obj
 	ctx.sp = sp
 	ctx.pc += 1
@@ -184,9 +159,8 @@ def op_noret(x):
 	ctx.sp -= 1
 
 def op_call(addr):
-	sp = ctx.sp
+	sp = ctx.sp + 1
 	stack = ctx.stack
-	sp += 1
 	stack[sp] = (ctx.bp, ctx.pc + 1)
 	ctx.bp = sp
 	ctx.pc = int(addr)
@@ -196,7 +170,7 @@ def op_je(addr):
 	sp = ctx.sp
 	stack = ctx.stack
 	
-	if stack[sp] == stack[sp - 1]:
+	if stack[sp - 1] == stack[sp]:
 		ctx.pc = int(addr)
 	else:
 		ctx.pc += 1
@@ -205,7 +179,7 @@ def op_jne(addr):
 	sp = ctx.sp
 	stack = ctx.stack
 	
-	if stack[sp] != stack[sp - 1]:
+	if stack[sp - 1] != stack[sp]:
 		ctx.pc = int(addr)
 	else:
 		ctx.pc += 1
@@ -214,7 +188,7 @@ def op_jg(addr):
 	sp = ctx.sp
 	stack = ctx.stack
 	
-	if stack[sp] > stack[sp - 1]:
+	if stack[sp - 1] > stack[sp]:
 		ctx.pc = int(addr)
 	else:
 		ctx.pc += 1
@@ -223,7 +197,7 @@ def op_jge(addr):
 	sp = ctx.sp
 	stack = ctx.stack
 	
-	if stack[sp] >= stack[sp - 1]:
+	if stack[sp - 1] >= stack[sp]:
 		ctx.pc = int(addr)
 	else:
 		ctx.pc += 1
@@ -232,7 +206,7 @@ def op_jl(addr):
 	sp = ctx.sp
 	stack = ctx.stack
 	
-	if stack[sp] < stack[sp - 1]:
+	if stack[sp - 1] < stack[sp]:
 		ctx.pc = int(addr)
 	else:
 		ctx.pc += 1
@@ -241,7 +215,7 @@ def op_jle(addr):
 	sp = ctx.sp
 	stack = ctx.stack
 	
-	if stack[sp] <= stack[sp - 1]:
+	if stack[sp - 1] <= stack[sp]:
 		ctx.pc = int(addr)
 	else:
 		ctx.pc += 1
@@ -256,7 +230,6 @@ def op_out(port_id):
 	ctx.pc += 1
 
 def op_int(func_id):
-	print(ctx.stack[ctx.sp])
 	ctx.pc += 1
 
 _running = False
@@ -279,6 +252,11 @@ dispatch = {
 
 def execute(code):
 	global _running
+
+	ctx.pc = 0
+	ctx.sp = -1
+	ctx.bp = 0
+	ctx.clock = 0
 
 	_running = True
 	while _running:

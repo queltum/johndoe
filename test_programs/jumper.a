@@ -1,0 +1,11 @@
+-- jumper program
+main:
+	jmp label_one
+label_two:
+	push "hello world"
+	jmp label_last
+label_one:
+	jmp label_two
+label_last:
+	int 1
+	ret

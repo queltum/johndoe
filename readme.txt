@@ -1,1 +1,1 @@
-johndoe - is an experimental stack-based platform for learning and experimenting with programming concepts.
+harpie - is an experimental stack-based virtual machine for learning and experimenting with programming concepts.
