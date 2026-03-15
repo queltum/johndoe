@@ -1,22 +1,14 @@
 -- push label program
+breakpoint
+push 12
+push 4
+push div_func
+invoke
+out
+end
 
-main:
-	push 12
-	push 12
-	push add_func
-	invoke
-	ret
-add_func:
+div_func:
 	over 2
-	add
+	div
 	ret 1
 
-main:
-	push 12
-	push 12
-	push 12
-	push 12
-	push 12
-	push 12
-	add
-	repeat 5

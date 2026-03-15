@@ -1,0 +1,22 @@
+-- push label program
+
+main:
+	push 12
+	push 12
+	push add_func
+	invoke
+	ret
+add_func:
+	over 2
+	add
+	ret 1
+
+main:
+	push 12
+	push 12
+	push 12
+	push 12
+	push 12
+	push 12
+	add
+	repeat 5

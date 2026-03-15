@@ -1,0 +1,4 @@
+push "spam"
+out
+repeat 9
+end

@@ -1,11 +1,14 @@
 -- jumper program
 main:
-	jmp label_one
-label_two:
-	push "hello world"
-	jmp label_last
-label_one:
-	jmp label_two
-label_last:
-	int 1
+	breakpoint
+	push 12
+	jmp lbl_one
+lbl_two:
+	out
 	ret
+lbl_one:
+	push 12
+	add
+	jmp lbl_three
+lbl_three:
+	jmp lbl_two

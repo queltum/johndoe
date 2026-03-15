@@ -6,7 +6,7 @@ _opcodes = {
 	"lsh": 0o14, "rsh": 0o15, "bic": 0o16, "neg": 0o17,
 
 	"push": 0o20, "pop": 0o21, "dup": 0o22, "poke": 0o23, 
-	"swap": 0o24, "over": 0o25, "dump": 0o26, "breakpoint": 0o27,
+	"swap": 0o24, "over": 0o25, "s2i": 0o26, "s2f": 0o27,
 
 	"je": 0o30, "jne": 0o31, "jg": 0o32, "jge": 0o33, 
 	"jl": 0o34, "jle": 0o35, "jmp": 0o36, "goto": 0o37,
@@ -14,10 +14,10 @@ _opcodes = {
 	"jez": 0o40, "jnez": 0o41, "jgz": 0o42, "jgez": 0o43, 
 	"jlz": 0o44, "jlez": 0o45, "repeat": 0o46, "end": 0o47,
 
-	"call": 0o50, "invoke": 0o51, "acall": 0o52, "await": 0o53, 
+	"call": 0o50, "invoke": 0o51, "dump": 0o52, "breakpoint": 0o53, 
 	"ret0": 0o54, "ret1": 0o55, "ret2": 0o56, "retn": 0o57,
 
-	"int": 0o60, "trap": 0o61, "in": 0o62, "out": 0o63,
+	"in": 0o60, "out": 0o61, "err": 0o62, "file": 0o63,
 }
 
 def resolve_labels(raw):

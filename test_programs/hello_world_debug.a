@@ -1,0 +1,6 @@
+-- hello world program with debug
+main:
+	breakpoint
+	push "hello world"
+	out
+	ret

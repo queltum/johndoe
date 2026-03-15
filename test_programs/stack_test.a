@@ -1,0 +1,9 @@
+-- stack test
+breakpoint
+push 12
+push 11
+dup 1
+sub
+swap 0
+out
+end

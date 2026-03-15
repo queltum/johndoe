@@ -1,0 +1,10 @@
+-- .rem hello world program
+-- pushs hello world
+-- int 1
+-- end
+
+-- hello world program
+main:
+	push "hello world"
+	out
+	ret

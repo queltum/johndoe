@@ -1,0 +1,15 @@
+-- invoke add program
+main:
+	breakpoint
+	push 12
+	push 12
+	push add_func
+	invoke
+	int 1
+	ret
+
+add_func:
+	dup -2
+	dup -1
+	add
+	ret 1

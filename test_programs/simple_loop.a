@@ -1,22 +1,16 @@
 -- simple loop program
 main:
-	push "I LOVE YOU"
-	int 1
-	repeat 10
-	ret 0
-
-main:
+	breakpoint
+	push "I love harpie"
 	push 10
-	push 0
-	push "I LOVE YOU"
 mainloop:
-	int
-	dup 2
-	inc
-	dup 1
-	je endloop
+	jez target
+	dec
+	swap 0
+	out
+	swap 0
 	jmp mainloop
-endloop:
-	push "exit command"
-	int
-	ret 0
+target:
+	push "exit from mainloop"
+	out
+	ret

@@ -1,10 +1,10 @@
--- add func program
 main:
 	in
 	s2i
 	in
 	s2i
-	call add_func
+	push add_func
+	invoke
 	out
 	ret
 add_func:

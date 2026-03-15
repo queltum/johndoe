@@ -1,13 +1,11 @@
 -- add func program
 main:
-	in
-	s2i
-	in
-	s2i
+	push 0x0C
+	push 0x0C
 	call add_func
-	out
+	int 1
 	ret
 add_func:
-	over 2
+	over 0x02
 	add
-	ret 1
+	ret 0x01

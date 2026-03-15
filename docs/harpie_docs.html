@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>jdvm documentation</title>
+	<title>harpie documentation</title>
 	<style>
 		h3 {
 			text-align: center;
@@ -23,7 +23,7 @@
 	</style>
 </head>
 <body>
-	<h3>jdvm isa table</h3>
+	<h3>harpie opcodes table</h3>
 	<table>
 		<tr>
 			<th>oct</th>
@@ -43,7 +43,7 @@
 		<tr>
 			<th>2</th>
 			<th>!push</th><th>!pop</th><th>!dup</th><th>!poke</th>
-			<th>!swap</th><th>!over</th><th>.dump</th><th>.breakpoint</th>
+			<th>!swap</th><th>!over</th><th>.s2i</th><th>.s2f</th>
 		</tr>
 		<tr>
 			<th>3</th>
@@ -57,12 +57,12 @@
 		</tr>
 		<tr>
 			<th>5</th>
-			<th>!call</th><th>.invoke</th><th>!acall</th><th>!await</th>
+			<th>!call</th><th>.invoke</th><th>.dump</th><th>.breakpoint</th>
 			<th>.ret0</th><th>.ret1</th><th>.ret2</th><th>!retn</th>
 		</tr>
 		<tr>
 			<th>6</th>
-			<th>!int</th><th>.trap</th><th>.in</th><th>.out</th>
+			<th>.in</th><th>.out</th><th>.err</th><th>.file</th>
 			<th>---</th><th>---</th><th>---</th><th>---</th>
 		</tr>
 		<tr>

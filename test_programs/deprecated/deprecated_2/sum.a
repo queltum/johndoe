@@ -1,0 +1,9 @@
+-- sum program
+main:
+	breakpoint
+	push 2
+	repeat 2
+	add
+	repeat 1
+	int 1
+	ret

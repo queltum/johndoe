@@ -1,0 +1,9 @@
+-- add 2 nums program
+main:
+	in
+	s2i
+	in
+	s2i
+	add
+	out
+	ret

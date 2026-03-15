@@ -1,31 +1,28 @@
 import sys
-import asm
-import core
-
-VERSION = "0x0001"
+from preprocessor import *
+from parser import *
+from executor import *
 
 debug = None
-stack_sz = None
+stack_sz = 128
+_exec = fast_exec
 
-# EXECUTORS = {
-# 	(False, False): local_exec,
-# 	(False, True): local_static_exec,
-# 	(True, False): local_tracing_exec,
-# 	(True, True): local_trancing_static_exec
-# }
-core.local_exec(
-	asm.parse(
-		asm.preprocess(
-			open("../test_programs/hello_world.jda", "r").read()
+for arg in sys.argv[1:]:
+	if arg.startswith("-debug"):
+		_exec = debug_exec
+	elif arg.startswith("-sz="):
+		stack_sz = int(arg.split('=')[1])
+	else:
+		pass
+
+file = open(sys.argv[-1], "r")
+
+_exec(
+	parse(
+		preprocess(
+			file.read()
 		)
-	), 128
+	), stack_sz
 )
 
-# for arg in sys.argv[1]:
-# 	if arg.startswith("-debug"):
-# 		debug = True
-# 	elif arg.startswith("-sz="):
-# 		stack_sz = int(arg.split('=')[1])
-# 	elif arg.startswith("-version") or arg.startswith("-v"):
-# 		print(f"harpie virtual machine version {VERSION}")
-# 		break
+file.close()

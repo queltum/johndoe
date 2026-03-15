@@ -1,4 +1,6 @@
-def local_exec(il, stack_sz):
+def fast_exec(il, stack_sz):
+	_out = print
+	_in = input
 	stack = [0] * stack_sz
 	sp = -1
 	bp = 0
@@ -113,43 +115,45 @@ def local_exec(il, stack_sz):
 				stack[sp + 1 : sp + 1 + arg] = stack[bp - arg : bp]
 				sp += arg
 				pc += 1
-			# .dump TESTED
+			# .s2i
 			case 0o26:
+				stack[sp] = int(stack[sp])
 				pc += 1
-			# .breakpoint TESTED
+			# .s2f
 			case 0o27:
+				stack[sp] = float(stack[sp])
 				pc += 1
-			# !je
+			# !je TESTED
 			case 0o30:
 				if stack[sp - 1] == stack[sp]:
 					pc = arg
 				else:
 					pc += 1
-			# !jne
+			# !jne TESTED
 			case 0o31:
 				if stack[sp - 1] != stack[sp]:
 					pc = arg
 				else:
 					pc += 1
-			# !jg
+			# !jg TESTED
 			case 0o32:
 				if stack[sp - 1] > stack[sp]:
 					pc = arg
 				else:
 					pc += 1
-			# !jge
+			# !jge TESTED
 			case 0o33:
 				if stack[sp - 1] >= stack[sp]:
 					pc = arg
 				else:
 					pc += 1
-			# !jl
+			# !jl TESTED
 			case 0o34:
 				if stack[sp - 1] < stack[sp]:
 					pc = arg
 				else:
 					pc += 1
-			# !jle
+			# !jle TESTED
 			case 0o35:
 				if stack[sp - 1] <= stack[sp]:
 					pc = arg
@@ -158,42 +162,42 @@ def local_exec(il, stack_sz):
 			# !jmp TESTED
 			case 0o36:
 				pc = arg
-			# .goto
+			# .goto TESTED
 			case 0o37:
 				pc = stack[sp]
-			# !jez
+			# !jez TESTED
 			case 0o40:
-				if not stack[sp - 1]:
+				if not stack[sp]:
 					pc = arg
 				else:
 					pc += 1
-			# !jnez
+			# !jnez TESTED
 			case 0o41:
-				if stack[sp - 1]:
+				if stack[sp]:
 					pc = arg
 				else:
 					pc += 1
-			# !jgz
+			# !jgz TESTED
 			case 0o42:
-				if stack[sp - 1] > 0:
+				if stack[sp] > 0:
 					pc = arg
 				else:
 					pc += 1
-			# !jgez
+			# !jgez TESTED
 			case 0o43:
-				if stack[sp - 1] >= 0:
+				if stack[sp] >= 0:
 					pc = arg
 				else:
 					pc += 1
-			# !jlz
+			# !jlz TESTED
 			case 0o44:
-				if stack[sp - 1] < 0:
+				if stack[sp] < 0:
 					pc = arg
 				else:
 					pc += 1
-			# !jlez
+			# !jlez TESTED
 			case 0o45:
-				if stack[sp - 1] <= 0:
+				if stack[sp] <= 0:
 					pc = arg
 				else:
 					pc += 1
@@ -202,115 +206,119 @@ def local_exec(il, stack_sz):
 				prev_opcode, prev_arg = il[pc - 1]
 				
 				match prev_opcode:
-					# !repeat .add
+					# !repeat .add TESTED TESTED
 					case 0o00:
 						tmp = sp - arg
-						stack[tmp] = sum(stack[tmp : sp])
+						stack[tmp] = sum(stack[tmp : sp + 1])
 						sp = tmp
-					# .sub
+					# !repeat .sub TESTED
 					case 0o01:
 						while arg:
 							sp -= 1
-							stack[sp] *= stack[sp + 1]
+							stack[sp] -= stack[sp + 1]
 							arg -= 1
-
-					# !repeat .mul
+					# !repeat .mul TESTED
 					case 0o02:
 						while arg:
 							sp -= 1
 							stack[sp] *= stack[sp + 1]
 							arg -= 1 
-					# !repeat .div
+					# !repeat .div TESTED
 					case 0o03:
 						while arg:
 							sp -= 1
 							stack[sp] /= stack[sp + 1]
 							arg -= 1
-					# !repeat .mod
+					# !repeat .mod (!) TESTED
 					case 0o04:
 						while arg:
 							sp -= 1
 							stack[sp] %= stack[sp + 1]
-							arg -= 1 
-					# !repeat .pow
+							arg -= 1
+					# !repeat .pow TESTED
 					case 0o05:
 						while arg:
 							sp -= 1
 							stack[sp] **= stack[sp + 1]
 							arg -= 1
-					# !repeat .inc
+					# !repeat .inc TESTED
 					case 0o06:
 						stack[sp] += arg
-					# !repeat .dec
+					# !repeat .dec TESTED
 					case 0o07:
 						stack[sp] -= arg
-					# !repeat .and
+					# !repeat .and TESTED
 					case 0o10:
 						while arg:
 							sp -= 1
 							stack[sp] &= stack[sp + 1]
 							arg -= 1
-					# !repeat .or
+					# !repeat .or TESTED
 					case 0o11:
 						while arg:
 							sp -= 1
 							stack[sp] |= stack[sp + 1]
 							arg -= 1
-					# !repeat .xor
+					# !repeat .xor TESTED
 					case 0o12:
 						while arg:
 							sp -= 1
 							stack[sp] ^= stack[sp + 1]
 							arg -= 1
-					# !repeat .not
+					# !repeat .not TESTED
 					case 0o13:
 						if arg % 2:
 							stack[sp] = ~stack[sp]
-					# !repeat .lsh
+					# !repeat .lsh TESTED
 					case 0o14:
 						while arg:
 							sp -= 1
 							stack[sp] <<= stack[sp + 1]
 							arg -= 1
-					# !repeat .rsh
+					# !repeat .rsh TESTED
 					case 0o15:
 						while arg:
 							sp -= 1
 							stack[sp] >>= stack[sp + 1]
 							arg -= 1
-					# !repeat !bic
+					# !repeat !bic TESTED
 					case 0o16:
 						stack[sp] &= ~prev_arg
-					# !repeat .neg
+					# !repeat .neg TESTED
 					case 0o17:
 						if arg % 2:
-							stack[sp] = ~stack[sp] + 1
-					# !repeat !push
+							stack[sp] = -stack[sp]
+					# !repeat !push TESTED
 					case 0o20:
 						stack[sp + 1 : sp + 1 + arg] = [prev_arg] * arg
 						sp += arg
-					# !repeat !pop
+					# !repeat !pop TESTED
 					case 0o21:
 						sp -= (prev_arg * arg)
-					# !repeat !dup
+					# !repeat !dup TESTED
 					case 0o22:
 						stack[sp + 1 : sp + 1 + arg] = [stack[bp + prev_arg]] * arg
 						sp += arg
-					# !repeat !poke
+					# !repeat !poke TESTED
 					case 0o23:
 						sp -= arg
 						stack[bp + prev_arg] = stack[sp + 1]
-					# !repeat !swap
+					# !repeat !swap TESTED
 					case 0o24:
 						if arg % 2:
 							top = stack[sp]
 							stack[sp] = stack[bp + prev_arg]
 							stack[bp + prev_arg] = top
-					# !repeat !over
+					# !repeat !over TESTED
 					case 0o25:
 						_vars = [*stack[bp - prev_arg : bp]] * arg
 						stack[sp + 1 : sp + 1 + prev_arg * arg] = _vars
 						sp += prev_arg * arg
+					# !repeat .out
+					case 0o61:
+						while arg:
+							_out(stack[sp])
+							arg -= 1
 				pc += 1
 			# .end TESTED
 			case 0o47:
@@ -322,11 +330,14 @@ def local_exec(il, stack_sz):
 				pc, bp = arg, sp
 			# .invoke
 			case 0o51:
-				pc += 1
-			# !acall
+				addr = stack[sp]
+				stack[sp] = pc + 1, bp
+				bp = sp
+				pc = addr
+			# .dump 
 			case 0o52:
 				pc += 1
-			# !await
+			# .breakpoint
 			case 0o53:
 				pc += 1
 			# .ret0 TESTED
@@ -351,15 +362,27 @@ def local_exec(il, stack_sz):
 				sp -= 1
 				stack[bp : sp] = ret_val
 				pc, bp = tmp
-			# !int TESTED
+			# .in
 			case 0o60:
-				print(stack[sp])
+				sp += 1
+				stack[sp] = _in()
 				pc += 1
-			case _:
-				print(f"jdvm_warn: unknown opcode {opcode}")
+			# .out
+			case 0o61:
+				_out(stack[sp])
+				pc += 1
+			# .err
+			case 0o62:
+				_out(stack[sp])
+				pc += 1
+			# .file
+			case 0o63:
 				pc += 1
 
-def local_tracing_exec(il, stack_sz):
+def debug_exec(il, stack_sz):
+	_in = input
+	_out = print
+	clock = 0
 	stack = [0] * stack_sz
 	tracing = False
 	sp = -1
@@ -475,13 +498,13 @@ def local_tracing_exec(il, stack_sz):
 				stack[sp + 1 : sp + 1 + arg] = stack[bp - arg : bp]
 				sp += arg
 				pc += 1
-			# .dump
+			# .s2i
 			case 0o26:
-				print(f"jdmv_dump: sp={sp}, bp={bp}, pc={pc}, [sp]={stack[sp]}")
+				stack[sp] = int(stack[sp])
 				pc += 1
-			# .breakpoint
+			# .s2f
 			case 0o27:
-				tracing = True
+				stack[sp] = float(stack[sp])
 				pc += 1
 			# !je
 			case 0o30:
@@ -527,37 +550,37 @@ def local_tracing_exec(il, stack_sz):
 				pc = stack[sp]
 			# !jez
 			case 0o40:
-				if not stack[sp - 1]:
+				if not stack[sp]:
 					pc = arg
 				else:
 					pc += 1
 			# !jnez
 			case 0o41:
-				if stack[sp - 1]:
+				if stack[sp]:
 					pc = arg
 				else:
 					pc += 1
 			# !jgz
 			case 0o42:
-				if stack[sp - 1] > 0:
+				if stack[sp] > 0:
 					pc = arg
 				else:
 					pc += 1
 			# !jgez
 			case 0o43:
-				if stack[sp - 1] >= 0:
+				if stack[sp] >= 0:
 					pc = arg
 				else:
 					pc += 1
 			# !jlz
 			case 0o44:
-				if stack[sp - 1] < 0:
+				if stack[sp] < 0:
 					pc = arg
 				else:
 					pc += 1
 			# !jlez
 			case 0o45:
-				if stack[sp - 1] <= 0:
+				if stack[sp] <= 0:
 					pc = arg
 				else:
 					pc += 1
@@ -569,7 +592,7 @@ def local_tracing_exec(il, stack_sz):
 					# !repeat .add
 					case 0o00:
 						tmp = sp - arg
-						stack[tmp] = sum(stack[tmp : sp])
+						stack[tmp] = sum(stack[tmp : sp + 1])
 						sp = tmp
 					# .sub
 					case 0o01:
@@ -686,12 +709,17 @@ def local_tracing_exec(il, stack_sz):
 				pc, bp = arg, sp
 			# .invoke
 			case 0o51:
-				pc += 1
-			# !acall
+				addr = stack[sp]
+				stack[sp] = pc + 1, bp
+				bp = sp
+				pc = addr
+			# .dump
 			case 0o52:
+				_out(f"sp={sp}, bp={bp}, pc={pc}, [sp]={stack[sp]}")
 				pc += 1
-			# !await
+			# .breakpoint
 			case 0o53:
+				tracing = True
 				pc += 1
 			# .ret0
 			case 0o54:
@@ -715,12 +743,27 @@ def local_tracing_exec(il, stack_sz):
 				sp -= 1
 				stack[bp : sp] = ret_val
 				pc, bp = tmp
-			# !int
+			# .in
 			case 0o60:
-				print(stack[sp])
+				sp += 1
+				stack[sp] = _in()
+				pc += 1
+			# .out
+			case 0o61:
+				_out(stack[sp])
+				pc += 1
+			# .err
+			case 0o62:
+				_out(stack[sp])
+				pc += 1
+			# .file
+			case 0o63:
 				pc += 1
 			case _:
-				print(f"jdvm_warn: unknown opcode {opcode}")
+				_out(f"warn: unknown opcode {opcode}")
 				pc += 1
+		clock += 1
 		if tracing:
-			input(f"jdvm_dump: sp={sp}, bp={bp}, pc={pc}, [sp]={stack[sp]}")
+			_in(
+				f"::{clock}:: sp={sp}, bp={bp}, pc={pc}, [sp]={stack[sp]}"
+			)

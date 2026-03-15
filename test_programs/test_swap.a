@@ -1,0 +1,8 @@
+-- test swap program
+main:
+	breakpoint
+	push 12
+	push 11
+	swap 0
+	out
+	ret
